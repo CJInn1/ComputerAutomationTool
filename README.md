@@ -22,7 +22,18 @@ App: PowerShell.
 ```powershell
 conda --version
 ```
-If not recognized for this session:
+
+**If not recognized, add to system PATH permanently:**
+1. Open **Control Panel** → **System** → **Advanced System Settings**
+2. Click **Environment Variables**
+3. Under **System Variables**, select **Path** and click **Edit**
+4. Click **New** and add these paths:
+   - `C:\Users\JDL\AppData\Local\anaconda3`
+   - `C:\Users\JDL\AppData\Local\anaconda3\Scripts`
+5. Click **OK** to save
+6. **Restart PowerShell** for changes to take effect
+
+**Alternative (temporary for current session only):**
 ```powershell
 $env:Path = "C:\Users\JDL\AppData\Local\anaconda3;$($env:Path)"
 $env:Path = "C:\Users\JDL\AppData\Local\anaconda3\Scripts;$($env:Path)"
