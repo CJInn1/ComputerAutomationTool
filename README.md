@@ -1,5 +1,49 @@
 # ComputerAutomationTool
 
+This repository contains the `ComputerAutomationTool` project, which integrates OmniParser V2 as a Git submodule for screen parsing capabilities.
+
+## Quick Start (For New Users)
+
+### 1. Clone with Submodules
+If you're cloning this repository for the first time, you need to initialize the OmniParser submodule:
+
+```powershell
+# Clone the repository
+git clone https://github.com/CJlnn1/ComputerAutomationTool.git
+cd ComputerAutomationTool
+
+# Initialize and update the OmniParser submodule
+git submodule update --init --recursive
+```
+
+### 2. Run OmniParser Demo
+```powershell
+# Navigate to OmniParser directory
+cd OmniParser
+
+# Activate conda environment
+conda activate omni
+
+# Run the demo
+python gradio_demo.py
+```
+Open your browser to: `http://127.0.0.1:7861`
+
+### 3. Update OmniParser
+To get the latest updates from the original OmniParser repository:
+
+```powershell
+# From the main project directory
+cd C:\Users\JDL\Documents\GitHub\ComputerAutomationTool
+git submodule update --remote OmniParser
+```
+
+**Note:** After updating, you may need to reinstall dependencies if `requirements.txt` changed. See the full setup guide below.
+
+---
+
+## Full Setup Guide (For Initial Installation)
+
 ## OmniParser V2 on Windows 11 (CPU‑only) – End‑to‑End Setup
 
 This guide reproduces the exact sequence used to get OmniParser V2 running locally on a Dell Inspiron 15 (Windows 11, Intel Iris Xe, CPU‑only) in the folder `C:\Users\JDL\Documents\GitHub\ComputerAutomationTool`.
@@ -140,3 +184,73 @@ http://127.0.0.1:7861
 - EasyOCR `bidi`/matplotlib `dateutil` issues: pinned compatible versions.
 - Florence‑2/transformers flash_attn import: use `transformers==4.40.2` and the mock `flash_attn.py`.
 - Gradio schema TypeError: use `gradio==3.50.2` with `gradio-client==0.6.1`.
+
+---
+
+## Environment Management
+
+### Export Working Environment
+To save your working environment for reproducibility:
+
+```powershell
+# Export conda environment
+conda env export > omni_environment.yml
+
+# Export pip requirements
+pip freeze > requirements-lock.txt
+```
+
+### Recreate Environment
+To recreate the exact environment on another machine:
+
+```powershell
+# Create environment from file
+conda env create -f omni_environment.yml
+
+# Or install from requirements
+conda create -n omni python==3.12
+conda activate omni
+pip install -r requirements-lock.txt
+```
+
+## Important Notes
+
+### Git Submodule Management
+- **OmniParser is a Git submodule**: This means it's a separate repository linked to this project
+- **Don't edit OmniParser files directly**: Changes should be made in the original Microsoft repository
+- **Weights folder**: The `OmniParser/weights/` folder is not tracked by Git (too large)
+- **flash_attn workaround**: The mock `flash_attn.py` file is environment-specific and may need recreation
+
+### After Updating OmniParser
+When you update the submodule, you may need to:
+
+1. **Reinstall dependencies** if `requirements.txt` changed:
+   ```powershell
+   cd OmniParser
+   conda activate omni
+   pip install -r requirements.txt
+   # Reinstall pinned versions if needed (see Step 7 above)
+   ```
+
+2. **Recreate flash_attn mock** if missing:
+   ```powershell
+   # Run the flash_attn mock creation command from Step 9 above
+   ```
+
+3. **Re-download weights** if the model structure changed:
+   ```powershell
+   # Run the weights download commands from Step 8 above
+   ```
+
+### Project Structure
+```
+ComputerAutomationTool/
+├── README.md
+├── .gitmodules          # Lists all submodules
+├── omni_environment.yml # Exported conda environment
+├── requirements-lock.txt # Exact pip package versions
+└── OmniParser/          # Git submodule
+    ├── gradio_demo.py
+    ├── weights/         # Not tracked by Git
+    └── ...
+```
